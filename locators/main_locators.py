@@ -27,3 +27,4 @@ class MainLocators:
     POPUP_CLOSE_BUTTON = (By.XPATH, "//button[contains(@class,'Modal_modal__close')]")
 
     ORDER_NUMBER_IN_MODAL = (By.XPATH, "//p[contains(@class,'Modal') and contains(text(),'идентификатор')]//following-sibling::h2 | //h2[contains(@class,'text_type_digits')]")
+    MODAL_OVERLAY = (By.XPATH, "//div[contains(@class,'Modal_modal_overlay')]")

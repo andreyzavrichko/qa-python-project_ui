@@ -8,15 +8,12 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.chrome import ChromeDriverManager
-
+from webdriver_manager.firefox import GeckoDriverManager
 
 from config import BASE_URL
 from helpers.api_client import ApiClient
 
 fake = Faker()
-# костыль при исчерпании лимитов скачивания
-GECKO_DRIVER_PATH = r"C:\Users\a.zavrichko\.wdm\drivers\geckodriver\win64\v0.36.0\geckodriver.exe"
-
 
 @pytest.fixture(params=["chrome", "firefox"], ids=["chrome", "firefox"])
 def driver(request):
@@ -29,7 +26,7 @@ def driver(request):
         web_driver = webdriver.Chrome(service=service, options=options)
     elif browser == "firefox":
         options = FirefoxOptions()
-        service = FirefoxService(GECKO_DRIVER_PATH)
+        service = FirefoxService(GeckoDriverManager().install())
         web_driver = webdriver.Firefox(service=service, options=options)
     else:
         raise ValueError(f"Неизвестный браузер: {browser}")
@@ -66,4 +63,4 @@ def authenticated_driver(driver, new_user):
         new_user["refresh_token"],
     )
     driver.refresh()
-    yield driver, new_user
+    return driver, new_user

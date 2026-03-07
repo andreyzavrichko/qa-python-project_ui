@@ -1,6 +1,5 @@
 from pages.base_page import BasePage
 from locators.register_locators import RegisterLocators
-from locators.auth_locators import AuthLocators
 
 
 class RegisterPage(BasePage):
@@ -19,12 +18,6 @@ class RegisterPage(BasePage):
 
     def click_login_link(self):
         self.click(RegisterLocators.LOGIN_LINK)
-
-    def wait_auth_page(self):
-        self.wait_visible(AuthLocators.AUTH_TITLE)
-
-    def auth_title_text(self) -> str:
-        return self.get_text(AuthLocators.AUTH_TITLE)
 
     def incorrect_password_error_text(self) -> str:
         return self.get_text(RegisterLocators.INCORRECT_PASSWORD_ERROR)

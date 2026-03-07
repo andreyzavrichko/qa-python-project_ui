@@ -31,8 +31,8 @@ class TestRegister:
             register.set_password(password)
             register.click_register_button()
         with allure.step("Проверить редирект на страницу входа"):
-            register.wait_auth_page()
-            assert register.auth_title_text() == "Вход"
+            auth.wait_auth_page()
+            assert auth.auth_title_text() == "Вход"
 
         tokens = ApiClient.login_user(email, password)
         ApiClient.delete_user(tokens["access_token"])

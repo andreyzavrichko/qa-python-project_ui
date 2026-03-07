@@ -10,3 +10,4 @@ class ForgotPasswordLocators:
         By.XPATH,
         "//input[@name='Введите новый пароль']/parent::div"
     )
+    LOGIN_LINK = (By.XPATH, "//a[@href='/login']")

@@ -1,6 +1,7 @@
 from selenium.common import ElementClickInterceptedException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from locators.main_locators import MainLocators
 
 
 WAIT_TIMEOUT = 10
@@ -27,19 +28,17 @@ class BasePage:
             self.wait_clickable(locator).click()
 
     def _wait_overlay_gone(self, timeout: int = 15):
-        from selenium.webdriver.common.by import By
-        overlay_locator = (By.XPATH, "//div[contains(@class,'Modal_modal_overlay')]")
         end = __import__("time").time() + timeout
         # Сначала ждём появления (на случай если ещё не рендерился)
         try:
             WebDriverWait(self.driver, 3).until(
-                EC.visibility_of_element_located(overlay_locator)
+                EC.visibility_of_element_located(MainLocators.MODAL_OVERLAY)
             )
         except Exception:
             pass  # оверлей уже ушёл или не появится — ok
         # Затем ждём исчезновения
         WebDriverWait(self.driver, max(1, end - __import__("time").time())).until(
-            EC.invisibility_of_element_located(overlay_locator)
+            EC.invisibility_of_element_located(MainLocators.MODAL_OVERLAY)
         )
 
     def send_keys(self, locator, text: str):
@@ -65,6 +64,12 @@ class BasePage:
             EC.invisibility_of_element_located(locator)
         )
 
+    def wait_until(self, condition, timeout: int = WAIT_TIMEOUT):
+        return WebDriverWait(self.driver, timeout).until(condition)
+
+    def execute_script(self, script: str, *args):
+        return self.driver.execute_script(script, *args)
+
     def is_displayed(self, locator) -> bool:
         try:
             return self.find(locator).is_displayed()
@@ -73,3 +78,9 @@ class BasePage:
 
     def get_attribute(self, locator, attribute: str) -> str:
         return self.wait_visible(locator).get_attribute(attribute)
+
+    def current_url_contains(self, path: str) -> bool:
+        return path in self.driver.current_url
+
+    def refresh(self):
+        self.driver.refresh()

@@ -1,7 +1,5 @@
 from pages.base_page import BasePage
 from locators.profile_locators import ProfileLocators
-from locators.auth_locators import AuthLocators
-from locators.main_locators import MainLocators
 
 
 class ProfilePage(BasePage):
@@ -22,14 +20,8 @@ class ProfilePage(BasePage):
         self.wait_visible(ProfileLocators.ORDER_HISTORY_ITEM)
         return self.find_all(ProfileLocators.ORDER_HISTORY_ITEM)
 
+    def order_history_is_open(self) -> bool:
+        return self.current_url_contains("/account/order-history")
+
     def click_logout(self):
         self.click(ProfileLocators.LOGOUT_BUTTON)
-
-    def wait_auth_page(self):
-        self.wait_visible(AuthLocators.AUTH_TITLE)
-
-    def auth_title_text(self) -> str:
-        return self.get_text(AuthLocators.AUTH_TITLE)
-
-    def burger_title_is_visible(self) -> bool:
-        return self.is_displayed(MainLocators.BURGER_TITLE)

@@ -1,5 +1,3 @@
-from selenium.webdriver.support.wait import WebDriverWait
-
 from pages.base_page import BasePage
 from locators.order_feed_locators import OrderFeedLocators
 
@@ -32,7 +30,7 @@ class OrderFeedPage(BasePage):
 
 
     def order_number_in_progress(self, order_number: str) -> bool:
-        WebDriverWait(self.driver, 10).until(
+        self.wait_until(
             lambda d: any(
                 order_number in el.text
                 for el in self.find_all(OrderFeedLocators.IN_PROGRESS_ORDER_NUMBER)

@@ -1,4 +1,5 @@
 import allure
+from pages.auth_page import AuthPage
 from pages.main_page import MainPage
 from pages.profile_page import ProfilePage
 
@@ -30,13 +31,14 @@ class TestProfile:
         with allure.step("Кликнуть «История заказов»"):
             profile.click_order_history()
         with allure.step("Проверить открытие раздела"):
-            assert "/account/order-history" in driver.current_url
+            assert profile.order_history_is_open()
 
     @allure.title("Выход из аккаунта")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_logout(self, authenticated_driver, driver):
         driver, user = authenticated_driver
         main = MainPage(driver)
+        auth = AuthPage(driver)
         profile = ProfilePage(driver)
         with allure.step("Перейти в личный кабинет"):
             main.click_personal_area()
@@ -44,8 +46,8 @@ class TestProfile:
         with allure.step("Нажать «Выход»"):
             profile.click_logout()
         with allure.step("Проверить редирект на страницу входа"):
-            profile.wait_auth_page()
-            assert profile.auth_title_text() == "Вход"
+            auth.wait_auth_page()
+            assert auth.auth_title_text() == "Вход"
 
     @allure.title("Переход из профиля в конструктор через кнопку «Конструктор»")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -60,7 +62,7 @@ class TestProfile:
             main.click_constructor_button()
         with allure.step("Проверить отображение конструктора"):
             main.wait_burger_title()
-            assert profile.burger_title_is_visible()
+            assert main.burger_title_is_visible()
 
     @allure.title("Переход из профиля в конструктор через логотип")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -75,4 +77,4 @@ class TestProfile:
             main.click_logo()
         with allure.step("Проверить отображение конструктора"):
             main.wait_burger_title()
-            assert profile.burger_title_is_visible()
+            assert main.burger_title_is_visible()

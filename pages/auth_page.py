@@ -1,7 +1,5 @@
-from pages.base_page import BasePage
 from locators.auth_locators import AuthLocators
-from locators.register_locators import RegisterLocators
-from locators.forgot_password_locators import ForgotPasswordLocators
+from pages.base_page import BasePage
 
 
 class AuthPage(BasePage):
@@ -31,9 +29,3 @@ class AuthPage(BasePage):
         self.set_email(email)
         self.set_password(password)
         self.click_login_button()
-
-    def register_link_is_displayed(self) -> bool:
-        return self.is_displayed(RegisterLocators.REGISTER_TITLE)
-
-    def forgot_password_link_is_displayed(self) -> bool:
-        return self.is_displayed(ForgotPasswordLocators.FORGOT_PASSWORD_TITLE)

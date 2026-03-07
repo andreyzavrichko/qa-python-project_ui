@@ -1,6 +1,3 @@
-from selenium.webdriver.common.action_chains import ActionChains
-
-from locators.auth_locators import AuthLocators
 from locators.main_locators import MainLocators
 from pages.base_page import BasePage
 
@@ -21,20 +18,6 @@ class MainPage(BasePage):
 
     def click_login_order_button(self):
         self.click(MainLocators.LOGIN_ORDER_BUTTON)
-
-    def set_email(self, email: str):
-        self.send_keys(AuthLocators.EMAIL_INPUT, email)
-
-    def set_password(self, password: str):
-        self.send_keys(AuthLocators.PASSWORD_INPUT, password)
-
-    def click_login_button(self):
-        self.click(AuthLocators.LOGIN_BUTTON)
-
-    def login(self, email: str, password: str):
-        self.set_email(email)
-        self.set_password(password)
-        self.click_login_button()
 
     def click_bun_tab(self):
         self.click(MainLocators.BUN_TAB)
@@ -84,7 +67,7 @@ class MainPage(BasePage):
 
     # костыль для firefox
     def _js_drag_and_drop(self, source, target):
-        self.driver.execute_script("""
+        self.execute_script("""
             function simulateDragDrop(sourceNode, targetNode) {
                 const EVENT_TYPES = ['dragstart', 'dragenter', 'dragover', 'drop', 'dragend'];
                 function createEvent(type) {
@@ -122,11 +105,5 @@ class MainPage(BasePage):
     def wait_burger_title(self):
         self.wait_visible(MainLocators.BURGER_TITLE)
 
-    def wait_profile_text(self):
-        from locators.profile_locators import ProfileLocators
-        self.wait_visible(ProfileLocators.PROFILE_INFO_TEXT)
-
-    def profile_text_is_correct(self) -> bool:
-        from locators.profile_locators import ProfileLocators
-        text = self.get_text(ProfileLocators.PROFILE_INFO_TEXT)
-        return "изменить свои персональные данные" in text
+    def burger_title_is_visible(self) -> bool:
+        return self.is_displayed(MainLocators.BURGER_TITLE)
